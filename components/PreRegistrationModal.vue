@@ -83,7 +83,7 @@ watch(() => props.show, (newVal) => {
 })
 
 // n8n Webhook URL
-const N8N_WEBHOOK_URL = 'https://n8n.maistik.studio/webhook-test/waterpolo-preregister'
+const N8N_WEBHOOK_URL = 'https://n8n.maistik.studio/webhook/waterpolo-preregister'
 
 const submitForm = async () => {
   isSubmitting.value = true
