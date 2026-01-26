@@ -1,0 +1,950 @@
+{
+  "name": "Waterpolo Cup Pre-Registration",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "waterpolo-preregister",
+        "options": {}
+      },
+      "id": "479ac72e-3d87-46ca-b64a-6669401cd097",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1472,
+        1888
+      ],
+      "webhookId": "waterpolo-preregister"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1RRsoJqaNRiDs0Pak731EaqQAfgeMm5A85ezkweqSIWM",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 830568589,
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RRsoJqaNRiDs0Pak731EaqQAfgeMm5A85ezkweqSIWM/edit#gid=830568589"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Marca temporal": "={{ $now.toISO() }}",
+            "Team Name": "={{ $json.body.teamName }}",
+            "Contact Person Name": "={{ $json.body.contactName }}",
+            "Email Address": "={{ $json.body.email }}",
+            "Phone Number": "={{ $json.body.phone }}",
+            "Country": "={{ $json.body.country }}",
+            "Estimated Number of Players": "={{ $json.body.players }}",
+            "Language": "={{ $json.body.language }}",
+            "Selected": "FALSE",
+            "Email Sent": "FALSE"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Marca temporal",
+              "displayName": "Marca temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Team Name",
+              "displayName": "Team Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Contact Person Name",
+              "displayName": "Contact Person Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Country",
+              "displayName": "Country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estimated Number of Players",
+              "displayName": "Estimated Number of Players",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Language",
+              "displayName": "Language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Selected",
+              "displayName": "Selected",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Sent",
+              "displayName": "Email Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "27e1dedb-ef87-48cc-a77d-e9567d3afa3e",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1728,
+        1888
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "D7dst6jV63uIcFxK",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "language-check",
+              "leftValue": "={{ $json.Language }}",
+              "rightValue": "es",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "8a192fa5-bd5c-4e8e-84bf-eb7d6598e6bc",
+      "name": "Check Language",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1936,
+        1888
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@valenciamasterswaterpolo.com",
+        "toEmail": "={{ $json['Email Address'] }}",
+        "subject": "Pre-inscripción recibida - Valencia Masters Water Polo Cup 2026",
+        "html": "={{ '<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"></head><body style=\"margin: 0; padding: 0; font-family: Helvetica Neue, Arial, sans-serif; background-color: #f5f5f5;\"><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff;\"><tr><td style=\"background: linear-gradient(135deg, #73326D 0%, #196CA0 100%); padding: 40px 30px; text-align: center;\"><h1 style=\"color: #ffffff; margin: 0; font-size: 28px; font-weight: bold;\">Valencia Masters Water Polo Cup 2026</h1><p style=\"color: #ffffff; margin: 10px 0 0; font-size: 16px; opacity: 0.9;\">III Torneo Masters de Waterpolo</p></td></tr><tr><td style=\"padding: 40px 30px;\"><h2 style=\"color: #0E2433; margin: 0 0 20px; font-size: 24px;\">¡Gracias por tu pre-inscripción!</h2><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">Estimado/a <strong>' + $json[\"Contact Person Name\"] + '</strong>,</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">Hemos recibido tu interés en participar en la <strong>Valencia Masters Water Polo Cup 2026</strong> con tu equipo <strong>' + $json[\"Team Name\"] + '</strong>.</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 30px;\">Nuestro equipo se pondrá en contacto contigo pronto con más detalles sobre la inscripción, el pago y la información del torneo.</p><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #f8f9fa; border-radius: 8px; margin-bottom: 30px;\"><tr><td style=\"padding: 25px;\"><h3 style=\"color: #73326D; margin: 0 0 15px; font-size: 18px;\">Detalles de tu registro:</h3><p style=\"color: #555555; font-size: 14px; line-height: 1.8; margin: 0;\"><strong>Equipo:</strong> ' + $json[\"Team Name\"] + '<br><strong>Contacto:</strong> ' + $json[\"Contact Person Name\"] + '<br><strong>Email:</strong> ' + $json[\"Email Address\"] + '<br><strong>Teléfono:</strong> ' + $json[\"Phone Number\"] + '<br><strong>País:</strong> ' + $json[\"Country\"] + '<br><strong>Jugadores:</strong> ' + $json[\"Estimated Number of Players\"] + '</p></td></tr></table><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #25D366; border-radius: 8px; margin-bottom: 30px;\"><tr><td style=\"padding: 25px; text-align: center;\"><h3 style=\"color: #ffffff; margin: 0 0 10px; font-size: 18px;\">¡Únete a nuestra comunidad de WhatsApp!</h3><p style=\"color: #ffffff; font-size: 14px; line-height: 1.6; margin: 0 0 15px;\">Mantente al día con las últimas noticias del torneo, actualizaciones y comunicaciones importantes.</p><a href=\"https://chat.whatsapp.com/Kqun0y0zVaUEbvPNtb3pMr\" style=\"display: inline-block; background-color: #ffffff; color: #25D366; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold; font-size: 14px;\">Unirse al grupo</a></td></tr></table><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #FE6E81; background: linear-gradient(135deg, #FE6E81 0%, #73326D 100%); border-radius: 8px;\"><tr><td style=\"padding: 25px; text-align: center;\"><h3 style=\"color: #ffffff; margin: 0 0 10px; font-size: 18px;\">Fechas del Torneo</h3><p style=\"color: #ffffff; font-size: 24px; font-weight: bold; margin: 0;\">16-17 Mayo 2026</p><p style=\"color: #ffffff; font-size: 14px; margin: 10px 0 0; opacity: 0.9;\">Valencia, España</p></td></tr></table></td></tr><tr><td style=\"background-color: #0E2433; padding: 30px; text-align: center;\"><p style=\"color: #ffffff; font-size: 14px; margin: 0 0 10px;\">Valencia Masters Water Polo Cup 2026</p><p style=\"color: #83B2BB; font-size: 12px; margin: 0;\">info@valenciamasterswaterpolo.com</p></td></tr></table></body></html>' }}",
+        "options": {
+          "replyTo": "info@valenciamasterswaterpolo.com"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2192,
+        1776
+      ],
+      "id": "1882bd59-5ad5-445d-be01-0a5b536583af",
+      "name": "Send Email Spanish",
+      "webhookId": "095c0ed8-e921-4793-9e18-48455e8642ab",
+      "credentials": {
+        "smtp": {
+          "id": "0y6D7UeO2zERH07D",
+          "name": "SMTP Hostinger valenciamasterswaterpolo.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@valenciamasterswaterpolo.com",
+        "toEmail": "={{ $json['Email Address'] }}",
+        "subject": "Pre-Registration Received - Valencia Masters Water Polo Cup 2026",
+        "html": "={{ '<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"></head><body style=\"margin: 0; padding: 0; font-family: Helvetica Neue, Arial, sans-serif; background-color: #f5f5f5;\"><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff;\"><tr><td style=\"background: linear-gradient(135deg, #73326D 0%, #196CA0 100%); padding: 40px 30px; text-align: center;\"><h1 style=\"color: #ffffff; margin: 0; font-size: 28px; font-weight: bold;\">Valencia Masters Water Polo Cup 2026</h1><p style=\"color: #ffffff; margin: 10px 0 0; font-size: 16px; opacity: 0.9;\">III Masters Water Polo Tournament</p></td></tr><tr><td style=\"padding: 40px 30px;\"><h2 style=\"color: #0E2433; margin: 0 0 20px; font-size: 24px;\">Thank you for your pre-registration!</h2><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">Dear <strong>' + $json[\"Contact Person Name\"] + '</strong>,</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">We have received your interest in participating in the <strong>Valencia Masters Water Polo Cup 2026</strong> with your team <strong>' + $json[\"Team Name\"] + '</strong>.</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 30px;\">Our team will contact you soon with more details about registration, payment, and tournament information.</p><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #f8f9fa; border-radius: 8px; margin-bottom: 30px;\"><tr><td style=\"padding: 25px;\"><h3 style=\"color: #73326D; margin: 0 0 15px; font-size: 18px;\">Your Registration Details:</h3><p style=\"color: #555555; font-size: 14px; line-height: 1.8; margin: 0;\"><strong>Team:</strong> ' + $json[\"Team Name\"] + '<br><strong>Contact:</strong> ' + $json[\"Contact Person Name\"] + '<br><strong>Email:</strong> ' + $json[\"Email Address\"] + '<br><strong>Phone:</strong> ' + $json[\"Phone Number\"] + '<br><strong>Country:</strong> ' + $json[\"Country\"] + '<br><strong>Players:</strong> ' + $json[\"Estimated Number of Players\"] + '</p></td></tr></table><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #25D366; border-radius: 8px; margin-bottom: 30px;\"><tr><td style=\"padding: 25px; text-align: center;\"><h3 style=\"color: #ffffff; margin: 0 0 10px; font-size: 18px;\">Join our WhatsApp Community!</h3><p style=\"color: #ffffff; font-size: 14px; line-height: 1.6; margin: 0 0 15px;\">Stay updated with the latest tournament news, updates, and important communications.</p><a href=\"https://chat.whatsapp.com/Kqun0y0zVaUEbvPNtb3pMr\" style=\"display: inline-block; background-color: #ffffff; color: #25D366; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold; font-size: 14px;\">Join the group</a></td></tr></table><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #FE6E81; background: linear-gradient(135deg, #FE6E81 0%, #73326D 100%); border-radius: 8px;\"><tr><td style=\"padding: 25px; text-align: center;\"><h3 style=\"color: #ffffff; margin: 0 0 10px; font-size: 18px;\">Tournament Dates</h3><p style=\"color: #ffffff; font-size: 24px; font-weight: bold; margin: 0;\">16-17 May 2026</p><p style=\"color: #ffffff; font-size: 14px; margin: 10px 0 0; opacity: 0.9;\">Valencia, Spain</p></td></tr></table></td></tr><tr><td style=\"background-color: #0E2433; padding: 30px; text-align: center;\"><p style=\"color: #ffffff; font-size: 14px; margin: 0 0 10px;\">Valencia Masters Water Polo Cup 2026</p><p style=\"color: #83B2BB; font-size: 12px; margin: 0;\">info@valenciamasterswaterpolo.com</p></td></tr></table></body></html>' }}",
+        "options": {
+          "replyTo": "info@valenciamasterswaterpolo.com"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2192,
+        1984
+      ],
+      "id": "100723df-0acc-478b-8871-026058ddf178",
+      "name": "Send Email English",
+      "webhookId": "3daf16cd-7210-40a6-b2b2-0cc42854026a",
+      "credentials": {
+        "smtp": {
+          "id": "0y6D7UeO2zERH07D",
+          "name": "SMTP Hostinger valenciamasterswaterpolo.com"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "40399092-b33c-47f5-ba6f-0d4ff296c85e",
+      "name": "Send Selection Emails",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        1472,
+        2352
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1RRsoJqaNRiDs0Pak731EaqQAfgeMm5A85ezkweqSIWM",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 830568589,
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RRsoJqaNRiDs0Pak731EaqQAfgeMm5A85ezkweqSIWM/edit#gid=830568589"
+        },
+        "options": {}
+      },
+      "id": "c14132d8-4c97-4ff2-9214-7ba8a9081fcc",
+      "name": "Read Registrations",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1728,
+        2352
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "D7dst6jV63uIcFxK",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "email-not-sent",
+              "leftValue": "={{ $json['Email Sent'] }}",
+              "rightValue": "false",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "5e6ce7c3-da67-458b-8ffa-79627aaf236e",
+              "leftValue": "={{ $json['Email Address'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0ad77f18-b5ed-4e85-8352-a969b45c10d3",
+      "name": "Filter Unsent Emails",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1936,
+        2352
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "selected-check",
+              "leftValue": "={{ $json['Selected'] }}",
+              "rightValue": "TRUE",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c8f99386-ad5c-4a17-af48-21c426b1c8d9",
+      "name": "Check Selected",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2144,
+        2352
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "lang-selected",
+              "leftValue": "={{ $json['Language'] }}",
+              "rightValue": "es",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "7151aced-3e79-41c2-89f7-6ad1ce6ac00d",
+      "name": "Language Selected",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2352,
+        2240
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "lang-rejected",
+              "leftValue": "={{ $json['Language'] }}",
+              "rightValue": "es",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "103558a4-b858-4daa-93cf-2557ebd7a7df",
+      "name": "Language Rejected",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2352,
+        2496
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@valenciamasterswaterpolo.com",
+        "toEmail": "={{ $json['Email Address'] }}",
+        "subject": "¡Felicidades! Tu equipo ha sido seleccionado - Valencia Masters Water Polo Cup 2026",
+        "html": "={{ '<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"></head><body style=\"margin: 0; padding: 0; font-family: Helvetica Neue, Arial, sans-serif; background-color: #f5f5f5;\"><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff;\"><tr><td style=\"background: linear-gradient(135deg, #73326D 0%, #196CA0 100%); padding: 40px 30px; text-align: center;\"><h1 style=\"color: #ffffff; margin: 0; font-size: 28px; font-weight: bold;\">Valencia Masters Water Polo Cup 2026</h1><p style=\"color: #ffffff; margin: 10px 0 0; font-size: 16px; opacity: 0.9;\">III Torneo Masters de Waterpolo</p></td></tr><tr><td style=\"padding: 40px 30px;\"><div style=\"text-align: center; margin-bottom: 30px;\"><span style=\"font-size: 60px;\">🎉</span></div><h2 style=\"color: #0E2433; margin: 0 0 20px; font-size: 24px; text-align: center;\">¡Enhorabuena! ¡Estáis dentro!</h2><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">¡Hola <strong>' + $json[\"Contact Person Name\"] + '</strong>!</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">¡Qué alegría darte la noticia! Tu equipo <strong>' + $json[\"Team Name\"] + '</strong> ha sido <strong>seleccionado</strong> para la <strong>Valencia Masters Water Polo Cup 2026</strong>. ¡Vais a flipar!</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 30px;\">Este año nos han llegado un montón de solicitudes y estamos encantados de que seáis parte de esta edición. ¡Va a ser brutal!</p><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #e8f5e9; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #4caf50;\"><tr><td style=\"padding: 25px;\"><h3 style=\"color: #2e7d32; margin: 0 0 15px; font-size: 18px;\">¿Qué tenéis que hacer ahora?</h3><p style=\"color: #555555; font-size: 14px; line-height: 1.8; margin: 0;\"><strong>1.</strong> Métete en el <strong>grupo de WhatsApp de Team Leaders</strong> (el enlace está más abajo)<br><strong>2.</strong> Ahí os iremos contando todos los detalles: pagos, horarios, logística...<br><strong>3.</strong> ¡Apuntad las fechas en el calendario!</p></td></tr></table><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #25D366; border-radius: 8px; margin-bottom: 30px;\"><tr><td style=\"padding: 25px; text-align: center;\"><h3 style=\"color: #ffffff; margin: 0 0 10px; font-size: 18px;\">WhatsApp - Team Leaders</h3><p style=\"color: #ffffff; font-size: 14px; line-height: 1.6; margin: 0 0 15px;\">Aquí nos coordinamos todos. Es el grupo de capitanes y contactos de los equipos seleccionados.</p><a href=\"https://chat.whatsapp.com/H4GjIyVdVku73mTiz5Hsoa\" style=\"display: inline-block; background-color: #ffffff; color: #25D366; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold; font-size: 14px;\">Unirme al grupo</a></td></tr></table><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #FE6E81; background: linear-gradient(135deg, #FE6E81 0%, #73326D 100%); border-radius: 8px; margin-bottom: 30px;\"><tr><td style=\"padding: 25px; text-align: center;\"><h3 style=\"color: #ffffff; margin: 0 0 10px; font-size: 18px;\">Fechas del Torneo</h3><p style=\"color: #ffffff; font-size: 24px; font-weight: bold; margin: 0;\">16-17 Mayo 2026</p><p style=\"color: #ffffff; font-size: 14px; margin: 10px 0 0; opacity: 0.9;\">Piscina UPV · Valencia</p></td></tr></table><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #f8f9fa; border-radius: 8px; margin-bottom: 30px;\"><tr><td style=\"padding: 25px; text-align: center;\"><h3 style=\"color: #0E2433; margin: 0 0 15px; font-size: 18px;\">Añadir al calendario</h3><p style=\"color: #555555; font-size: 14px; margin: 0 0 15px;\">Para que no se os olvide 😉</p><a href=\"https://calendar.google.com/calendar/render?action=TEMPLATE&text=Valencia+Masters+Water+Polo+Cup+2026&dates=20260516/20260518&details=III+Torneo+Masters+de+Waterpolo%0ASábado+16+Mayo:+15:00-21:00%0ADomingo+17+Mayo:+09:00-15:00&location=Piscina+UPV,+Cami+de+Vera,+Valencia,+Spain\" style=\"display: inline-block; background-color: #4285f4; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 13px; margin: 5px;\">Google Calendar</a><a href=\"https://outlook.live.com/calendar/0/deeplink/compose?subject=Valencia+Masters+Water+Polo+Cup+2026&startdt=2026-05-16&enddt=2026-05-18&location=Piscina+UPV,+Valencia,+Spain&body=III+Torneo+Masters+de+Waterpolo\" style=\"display: inline-block; background-color: #0078d4; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 13px; margin: 5px;\">Outlook</a></td></tr></table><p style=\"color: #555555; font-size: 14px; line-height: 1.6; margin: 0 0 20px; text-align: center;\"><em>También os adjuntamos un archivo .ics para Apple Calendar y otras apps.</em></p></td></tr><tr><td style=\"background-color: #0E2433; padding: 30px; text-align: center;\"><p style=\"color: #ffffff; font-size: 14px; margin: 0 0 10px;\">Valencia Masters Water Polo Cup 2026</p><p style=\"color: #83B2BB; font-size: 12px; margin: 0;\">info@valenciamasterswaterpolo.com</p></td></tr></table></body></html>' }}",
+        "options": {
+          "attachments": "data:text/calendar;base64,QkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KUFJPRElEOi0vL1ZhbGVuY2lhIE1hc3RlcnMgV2F0ZXIgUG9sby8vRU4NCkJFR0lOOlZFVkVOVA0KSVVJRDR2YWxlbmNpYS1tYXN0ZXJzLXdhdGVycG9sby0yMDI2QHZhbGVuY2lhbWFzdGVyc3dhdGVycG9sby5jb20NCkRUU1RBUlQ7VkFMVUU9REFURToyMDI2MDUxNg0KRFRFTkQ7VkFMVUU9REFURToyMDI2MDUxOA0KU1VNTUFSWTpWYWxlbmNpYSBNYXN0ZXJzIFdhdGVyIFBvbG8gQ3VwIDIwMjYNCkRFU0NSSVBUSU9OOklJSSBUb3JuZW8gTWFzdGVycyBkZSBXYXRlcnBvbG9cblNhYmFkbyAxNiBNYXlvOiAxNTowMC0yMTowMFxuRG9taW5nbyAxNyBNYXlvOiAwOTowMC0xNTowMA0KTE9DQVRJT046UGlzY2luYSBVUFYsIENhbWkgZGUgVmVyYSwgcy9uLCA0NjAyMiBWYWxlbmNpYSwgU3BhaW4NCkdFTzozOS40Nzk7LTAuMzQyDQpFTkQ6VkVWRU5UDQpFTkQ6VkNBTEVOREFSDQo=",
+          "replyTo": "info@valenciamasterswaterpolo.com"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2608,
+        2144
+      ],
+      "id": "01216849-49a1-4ca2-a475-0f37a3051ee7",
+      "name": "Selected Spanish",
+      "webhookId": "2a26ce54-4ff5-4289-ba07-7ff819e0d6b5",
+      "credentials": {
+        "smtp": {
+          "id": "0y6D7UeO2zERH07D",
+          "name": "SMTP Hostinger valenciamasterswaterpolo.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@valenciamasterswaterpolo.com",
+        "toEmail": "={{ $json['Email Address'] }}",
+        "subject": "Congratulations! Your team has been selected - Valencia Masters Water Polo Cup 2026",
+        "html": "={{ '<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"></head><body style=\"margin: 0; padding: 0; font-family: Helvetica Neue, Arial, sans-serif; background-color: #f5f5f5;\"><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff;\"><tr><td style=\"background: linear-gradient(135deg, #73326D 0%, #196CA0 100%); padding: 40px 30px; text-align: center;\"><h1 style=\"color: #ffffff; margin: 0; font-size: 28px; font-weight: bold;\">Valencia Masters Water Polo Cup 2026</h1><p style=\"color: #ffffff; margin: 10px 0 0; font-size: 16px; opacity: 0.9;\">III Masters Water Polo Tournament</p></td></tr><tr><td style=\"padding: 40px 30px;\"><div style=\"text-align: center; margin-bottom: 30px;\"><span style=\"font-size: 60px;\">🎉</span></div><h2 style=\"color: #0E2433; margin: 0 0 20px; font-size: 24px; text-align: center;\">You are in!</h2><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">Hey <strong>' + $json[\"Contact Person Name\"] + '</strong>!</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">Great news! Your team <strong>' + $json[\"Team Name\"] + '</strong> has been <strong>selected</strong> for the <strong>Valencia Masters Water Polo Cup 2026</strong>. Get ready for an amazing weekend!</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 30px;\">We got tons of applications this year and we are super excited to have you on board. It is going to be epic!</p><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #e8f5e9; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #4caf50;\"><tr><td style=\"padding: 25px;\"><h3 style=\"color: #2e7d32; margin: 0 0 15px; font-size: 18px;\">What to do now?</h3><p style=\"color: #555555; font-size: 14px; line-height: 1.8; margin: 0;\"><strong>1.</strong> Join the <strong>Team Leaders WhatsApp group</strong> (link below)<br><strong>2.</strong> We will share all the details there: payments, schedules, logistics...<br><strong>3.</strong> Save the dates to your calendar!</p></td></tr></table><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #25D366; border-radius: 8px; margin-bottom: 30px;\"><tr><td style=\"padding: 25px; text-align: center;\"><h3 style=\"color: #ffffff; margin: 0 0 10px; font-size: 18px;\">WhatsApp - Team Leaders</h3><p style=\"color: #ffffff; font-size: 14px; line-height: 1.6; margin: 0 0 15px;\">This is where we coordinate everything. Join the captains and contacts from all selected teams.</p><a href=\"https://chat.whatsapp.com/H4GjIyVdVku73mTiz5Hsoa\" style=\"display: inline-block; background-color: #ffffff; color: #25D366; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold; font-size: 14px;\">Join the group</a></td></tr></table><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #FE6E81; background: linear-gradient(135deg, #FE6E81 0%, #73326D 100%); border-radius: 8px; margin-bottom: 30px;\"><tr><td style=\"padding: 25px; text-align: center;\"><h3 style=\"color: #ffffff; margin: 0 0 10px; font-size: 18px;\">Tournament Dates</h3><p style=\"color: #ffffff; font-size: 24px; font-weight: bold; margin: 0;\">16-17 May 2026</p><p style=\"color: #ffffff; font-size: 14px; margin: 10px 0 0; opacity: 0.9;\">UPV Swimming Pool · Valencia</p></td></tr></table><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #f8f9fa; border-radius: 8px; margin-bottom: 30px;\"><tr><td style=\"padding: 25px; text-align: center;\"><h3 style=\"color: #0E2433; margin: 0 0 15px; font-size: 18px;\">Add to Calendar</h3><p style=\"color: #555555; font-size: 14px; margin: 0 0 15px;\">So you do not forget 😉</p><a href=\"https://calendar.google.com/calendar/render?action=TEMPLATE&text=Valencia+Masters+Water+Polo+Cup+2026&dates=20260516/20260518&details=III+Masters+Water+Polo+Tournament%0ASaturday+16+May:+15:00-21:00%0ASunday+17+May:+09:00-15:00&location=UPV+Swimming+Pool,+Cami+de+Vera,+Valencia,+Spain\" style=\"display: inline-block; background-color: #4285f4; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 13px; margin: 5px;\">Google Calendar</a><a href=\"https://outlook.live.com/calendar/0/deeplink/compose?subject=Valencia+Masters+Water+Polo+Cup+2026&startdt=2026-05-16&enddt=2026-05-18&location=UPV+Swimming+Pool,+Valencia,+Spain&body=III+Masters+Water+Polo+Tournament\" style=\"display: inline-block; background-color: #0078d4; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 13px; margin: 5px;\">Outlook</a></td></tr></table><p style=\"color: #555555; font-size: 14px; line-height: 1.6; margin: 0 0 20px; text-align: center;\"><em>We have also attached a .ics file for Apple Calendar and other apps.</em></p></td></tr><tr><td style=\"background-color: #0E2433; padding: 30px; text-align: center;\"><p style=\"color: #ffffff; font-size: 14px; margin: 0 0 10px;\">Valencia Masters Water Polo Cup 2026</p><p style=\"color: #83B2BB; font-size: 12px; margin: 0;\">info@valenciamasterswaterpolo.com</p></td></tr></table></body></html>' }}",
+        "options": {
+          "attachments": "data:text/calendar;base64,QkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KUFJPRElEOi0vL1ZhbGVuY2lhIE1hc3RlcnMgV2F0ZXIgUG9sby8vRU4NCkJFR0lOOlZFVkVOVA0KSVVJRDR2YWxlbmNpYS1tYXN0ZXJzLXdhdGVycG9sby0yMDI2QHZhbGVuY2lhbWFzdGVyc3dhdGVycG9sby5jb20NCkRUU1RBUlQ7VkFMVUU9REFURToyMDI2MDUxNg0KRFRFTkQ7VkFMVUU9REFURToyMDI2MDUxOA0KU1VNTUFSWTpWYWxlbmNpYSBNYXN0ZXJzIFdhdGVyIFBvbG8gQ3VwIDIwMjYNCkRFU0NSSVBUSU9OOklJSSBNYXN0ZXJzIFdhdGVyIFBvbG8gVG91cm5hbWVudFxuU2F0dXJkYXkgMTYgTWF5OiAxNTowMC0yMTowMFxuU3VuZGF5IDE3IE1heTogMDk6MDAtMTU6MDANCkxPQ0FUSU9OOlVQViBTd2ltbWluZyBQb29sLCBDYW1pIGRlIFZlcmEsIHMvbiwgNDYwMjIgVmFsZW5jaWEsIFNwYWluDQpHRU86MzkuNDc5Oy0wLjM0Mg0KRU5EOlZFVkVOVA0KRU5EOlZDQUxFTkRBUg0K",
+          "replyTo": "info@valenciamasterswaterpolo.com"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2608,
+        2352
+      ],
+      "id": "f949f686-d14c-4d5f-8112-311f9e78dbdd",
+      "name": "Selected English",
+      "webhookId": "6d67d85e-163f-44b4-bbb6-53d39a0b0188",
+      "credentials": {
+        "smtp": {
+          "id": "0y6D7UeO2zERH07D",
+          "name": "SMTP Hostinger valenciamasterswaterpolo.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@valenciamasterswaterpolo.com",
+        "toEmail": "={{ $json['Email Address'] }}",
+        "subject": "Información sobre tu solicitud - Valencia Masters Water Polo Cup 2026",
+        "html": "={{ '<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"></head><body style=\"margin: 0; padding: 0; font-family: Helvetica Neue, Arial, sans-serif; background-color: #f5f5f5;\"><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff;\"><tr><td style=\"background: linear-gradient(135deg, #73326D 0%, #196CA0 100%); padding: 40px 30px; text-align: center;\"><h1 style=\"color: #ffffff; margin: 0; font-size: 28px; font-weight: bold;\">Valencia Masters Water Polo Cup 2026</h1><p style=\"color: #ffffff; margin: 10px 0 0; font-size: 16px; opacity: 0.9;\">III Torneo Masters de Waterpolo</p></td></tr><tr><td style=\"padding: 40px 30px;\"><h2 style=\"color: #0E2433; margin: 0 0 20px; font-size: 24px;\">Gracias por apuntaros</h2><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">¡Hola <strong>' + $json[\"Contact Person Name\"] + '</strong>!</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">Antes de nada, queremos daros las gracias a ti y a tu equipo <strong>' + $json[\"Team Name\"] + '</strong> por el interés en participar en la <strong>Valencia Masters Water Polo Cup 2026</strong>.</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">Este año nos han llegado muchas más solicitudes de las que podemos acoger, así que hemos tenido que hacer un <strong>sorteo</strong> entre todos los equipos interesados para ver quién participa en esta edición.</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">Por desgracia, esta vez no os ha tocado. Sabemos que es un palo, pero de verdad que nos encantaría veros en próximas ediciones.</p><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #fff3e0; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #ff9800;\"><tr><td style=\"padding: 25px;\"><h3 style=\"color: #e65100; margin: 0 0 15px; font-size: 18px;\">¡El año que viene os esperamos!</h3><p style=\"color: #555555; font-size: 14px; line-height: 1.8; margin: 0;\">Seguid atentos a nuestras redes y apuntaos de nuevo en la próxima edición. ¡Nos haría mucha ilusión teneros!</p></td></tr></table><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">Gracias de nuevo por el interés. ¡Esperamos veros pronto en Valencia!</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0;\">Un abrazo,<br><strong>El equipo de Valencia Masters Water Polo Cup</strong></p></td></tr><tr><td style=\"background-color: #0E2433; padding: 30px; text-align: center;\"><p style=\"color: #ffffff; font-size: 14px; margin: 0 0 10px;\">Valencia Masters Water Polo Cup 2026</p><p style=\"color: #83B2BB; font-size: 12px; margin: 0;\">info@valenciamasterswaterpolo.com</p></td></tr></table></body></html>' }}",
+        "options": {
+          "replyTo": "info@valenciamasterswaterpolo.com"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2608,
+        2544
+      ],
+      "id": "0afe1b01-aaf3-4ca2-a5dc-128b4e980550",
+      "name": "Rejected Spanish",
+      "webhookId": "41811e8c-c286-445e-a92b-728eca018c28",
+      "credentials": {
+        "smtp": {
+          "id": "0y6D7UeO2zERH07D",
+          "name": "SMTP Hostinger valenciamasterswaterpolo.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@valenciamasterswaterpolo.com",
+        "toEmail": "={{ $json['Email Address'] }}",
+        "subject": "Information about your application - Valencia Masters Water Polo Cup 2026",
+        "html": "={{ '<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"></head><body style=\"margin: 0; padding: 0; font-family: Helvetica Neue, Arial, sans-serif; background-color: #f5f5f5;\"><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff;\"><tr><td style=\"background: linear-gradient(135deg, #73326D 0%, #196CA0 100%); padding: 40px 30px; text-align: center;\"><h1 style=\"color: #ffffff; margin: 0; font-size: 28px; font-weight: bold;\">Valencia Masters Water Polo Cup 2026</h1><p style=\"color: #ffffff; margin: 10px 0 0; font-size: 16px; opacity: 0.9;\">III Masters Water Polo Tournament</p></td></tr><tr><td style=\"padding: 40px 30px;\"><h2 style=\"color: #0E2433; margin: 0 0 20px; font-size: 24px;\">Thanks for signing up</h2><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">Hey <strong>' + $json[\"Contact Person Name\"] + '</strong>!</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">First off, thanks to you and your team <strong>' + $json[\"Team Name\"] + '</strong> for your interest in joining the <strong>Valencia Masters Water Polo Cup 2026</strong>.</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">This year we received way more applications than we can host, so we had to do a <strong>random draw</strong> among all interested teams to decide who gets to play this edition.</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">Unfortunately, this time you did not make it. We know it is a bummer, but we would really love to see you in future editions!</p><table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: #fff3e0; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #ff9800;\"><tr><td style=\"padding: 25px;\"><h3 style=\"color: #e65100; margin: 0 0 15px; font-size: 18px;\">See you next year!</h3><p style=\"color: #555555; font-size: 14px; line-height: 1.8; margin: 0;\">Stay tuned to our socials and sign up again for the next edition. We would be super happy to have you!</p></td></tr></table><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px;\">Thanks again for your interest. Hope to see you in Valencia soon!</p><p style=\"color: #555555; font-size: 16px; line-height: 1.6; margin: 0;\">Cheers,<br><strong>The Valencia Masters Water Polo Cup Team</strong></p></td></tr><tr><td style=\"background-color: #0E2433; padding: 30px; text-align: center;\"><p style=\"color: #ffffff; font-size: 14px; margin: 0 0 10px;\">Valencia Masters Water Polo Cup 2026</p><p style=\"color: #83B2BB; font-size: 12px; margin: 0;\">info@valenciamasterswaterpolo.com</p></td></tr></table></body></html>' }}",
+        "options": {
+          "replyTo": "info@valenciamasterswaterpolo.com"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2608,
+        2752
+      ],
+      "id": "10c06d0d-bcf3-4e6a-82d7-464ac1ae41a5",
+      "name": "Rejected English",
+      "webhookId": "23d7f727-a6c6-4752-9726-7bc924d673ed",
+      "credentials": {
+        "smtp": {
+          "id": "0y6D7UeO2zERH07D",
+          "name": "SMTP Hostinger valenciamasterswaterpolo.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1RRsoJqaNRiDs0Pak731EaqQAfgeMm5A85ezkweqSIWM",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 830568589,
+          "mode": "list",
+          "cachedResultName": "Sheet1"
+        },
+        "columnsToMatchOn": ["Email Address"],
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email Address": "={{ $json['Email Address'] }}",
+            "Email Sent": "TRUE"
+          },
+          "matchingColumns": ["Email Address"],
+          "schema": [
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Sent",
+              "displayName": "Email Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "update-selected-spanish",
+      "name": "Update Sent Selected ES",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [2816, 2144],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "D7dst6jV63uIcFxK",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1RRsoJqaNRiDs0Pak731EaqQAfgeMm5A85ezkweqSIWM",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 830568589,
+          "mode": "list",
+          "cachedResultName": "Sheet1"
+        },
+        "columnsToMatchOn": ["Email Address"],
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email Address": "={{ $json['Email Address'] }}",
+            "Email Sent": "TRUE"
+          },
+          "matchingColumns": ["Email Address"],
+          "schema": [
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Sent",
+              "displayName": "Email Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "update-selected-english",
+      "name": "Update Sent Selected EN",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [2816, 2352],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "D7dst6jV63uIcFxK",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1RRsoJqaNRiDs0Pak731EaqQAfgeMm5A85ezkweqSIWM",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 830568589,
+          "mode": "list",
+          "cachedResultName": "Sheet1"
+        },
+        "columnsToMatchOn": ["Email Address"],
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email Address": "={{ $json['Email Address'] }}",
+            "Email Sent": "TRUE"
+          },
+          "matchingColumns": ["Email Address"],
+          "schema": [
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Sent",
+              "displayName": "Email Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "update-rejected-spanish",
+      "name": "Update Sent Rejected ES",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [2816, 2544],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "D7dst6jV63uIcFxK",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1RRsoJqaNRiDs0Pak731EaqQAfgeMm5A85ezkweqSIWM",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 830568589,
+          "mode": "list",
+          "cachedResultName": "Sheet1"
+        },
+        "columnsToMatchOn": ["Email Address"],
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email Address": "={{ $json['Email Address'] }}",
+            "Email Sent": "TRUE"
+          },
+          "matchingColumns": ["Email Address"],
+          "schema": [
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Sent",
+              "displayName": "Email Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "update-rejected-english",
+      "name": "Update Sent Rejected EN",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [2816, 2752],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "D7dst6jV63uIcFxK",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Check Language",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Language": {
+      "main": [
+        [
+          {
+            "node": "Send Email Spanish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Email English",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Selection Emails": {
+      "main": [
+        [
+          {
+            "node": "Read Registrations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Registrations": {
+      "main": [
+        [
+          {
+            "node": "Filter Unsent Emails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Unsent Emails": {
+      "main": [
+        [
+          {
+            "node": "Check Selected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Selected": {
+      "main": [
+        [
+          {
+            "node": "Language Selected",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Language Rejected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Language Selected": {
+      "main": [
+        [
+          {
+            "node": "Selected Spanish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Selected English",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Language Rejected": {
+      "main": [
+        [
+          {
+            "node": "Rejected Spanish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rejected English",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Selected Spanish": {
+      "main": [
+        [
+          {
+            "node": "Update Sent Selected ES",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Selected English": {
+      "main": [
+        [
+          {
+            "node": "Update Sent Selected EN",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rejected Spanish": {
+      "main": [
+        [
+          {
+            "node": "Update Sent Rejected ES",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rejected English": {
+      "main": [
+        [
+          {
+            "node": "Update Sent Rejected EN",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "46db0d87-b231-477a-96d4-48d56e82dc7e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c5a306ebb8d73f730b50fbc27314868182d5b281d3350a4a4ac220ed141383cb"
+  },
+  "id": "zs7e3GrgJMxXS5wsYvIl8",
+  "tags": []
+}
