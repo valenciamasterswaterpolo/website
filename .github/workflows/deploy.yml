@@ -40,6 +40,6 @@ jobs:
       - run: npx nuxt build --preset github_pages
 
       - name: Deploy
-        run: npx gh-pages --dotfiles -d .output/public --cname masterupvcup.es -u "GitHub Actions <actions@github.com>" --repo https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+        run: npx gh-pages --dotfiles -d .output/public -u "GitHub Actions <actions@github.com>" --repo https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
