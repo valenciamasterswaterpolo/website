@@ -1,6 +1,9 @@
 import type { Vector2D, GameState, GameConfig, Player, Ball, Goal } from '~/types/game'
 
 export function useGamePhysics(config: GameConfig) {
+  // Track ball possession cooldown to prevent rapid stealing/glitching
+  let ballPossessionCooldown = 0
+  const BALL_POSSESSION_COOLDOWN = 0.4 // seconds - ball can't be stolen for this long after possession change
   const distance = (a: Vector2D, b: Vector2D): number => {
     const dx = a.x - b.x
     const dy = a.y - b.y
@@ -25,6 +28,28 @@ export function useGamePhysics(config: GameConfig) {
 
     position.x = Math.max(minX, Math.min(maxX, position.x))
     position.y = Math.max(minY, Math.min(maxY, position.y))
+  }
+
+  // Restrict goalkeeper movement to their goal zone
+  const clampGoalkeeperToZone = (player: Player) => {
+    if (player.role !== 'goalkeeper') return
+
+    const goalZoneWidth = 120 // How far goalkeeper can move from goal line
+    const padding = config.spriteSize / 2
+
+    if (player.team === 'white') {
+      // White goalkeeper - left side
+      const minX = config.poolBounds.x + padding
+      const maxX = config.poolBounds.x + goalZoneWidth
+      player.position.x = Math.max(minX, Math.min(maxX, player.position.x))
+    } else {
+      // Blue goalkeeper - right side
+      const minX = config.poolBounds.x + config.poolBounds.width - goalZoneWidth
+      const maxX = config.poolBounds.x + config.poolBounds.width - padding
+      player.position.x = Math.max(minX, Math.min(maxX, player.position.x))
+    }
+
+    // Y position is clamped to pool bounds (already done by clampToPoolBounds)
   }
 
   const applyWaterPhysics = (state: GameState, deltaTime: number) => {
@@ -52,6 +77,7 @@ export function useGamePhysics(config: GameConfig) {
       player.position.y += player.velocity.y * deltaTime
 
       clampToPoolBounds(player.position, config.spriteSize / 2)
+      clampGoalkeeperToZone(player)
 
       // Stamina drain/recovery based on speed
       if (speed > config.staminaSprintThreshold) {
@@ -97,9 +123,14 @@ export function useGamePhysics(config: GameConfig) {
     return point.x >= x && point.x <= x + width && point.y >= y && point.y <= y + height
   }
 
-  const checkCollisions = (state: GameState): { goalScored: boolean; scoringTeam: 'white' | 'blue' | null } => {
+  const checkCollisions = (state: GameState, deltaTime: number): { goalScored: boolean; scoringTeam: 'white' | 'blue' | null } => {
     let goalScored = false
     let scoringTeam: 'white' | 'blue' | null = null
+
+    // Decrement ball possession cooldown
+    if (ballPossessionCooldown > 0) {
+      ballPossessionCooldown -= deltaTime
+    }
 
     // Ball pickup when free - find closest player within range
     if (!state.ball.holder && !state.ball.isInFlight) {
@@ -118,6 +149,7 @@ export function useGamePhysics(config: GameConfig) {
         state.players.forEach((p) => (p.hasBall = false))
         closestPlayer.hasBall = true
         state.ball.holder = closestPlayer
+        ballPossessionCooldown = BALL_POSSESSION_COOLDOWN // Reset cooldown on pickup
       }
     }
 
@@ -205,7 +237,8 @@ export function useGamePhysics(config: GameConfig) {
           const relSpeed = magnitude({ x: relVelX, y: relVelY })
 
           // Ball stealing - when opponents collide and one has the ball
-          if (p1.team !== p2.team) {
+          // Only allow stealing if cooldown has expired (prevents rapid ball glitching)
+          if (p1.team !== p2.team && ballPossessionCooldown <= 0) {
             const ballHolder = p1.hasBall ? p1 : p2.hasBall ? p2 : null
             const stealer = p1.hasBall ? p2 : p2.hasBall ? p1 : null
 
@@ -228,6 +261,7 @@ export function useGamePhysics(config: GameConfig) {
                   state.ball.holder = stealer
                   state.ball.isInFlight = false
                   state.ball.velocity = { x: 0, y: 0 }
+                  ballPossessionCooldown = BALL_POSSESSION_COOLDOWN // Reset cooldown
                 }
               }
               // Can't steal from goalkeeper - they're protected
@@ -272,6 +306,7 @@ export function useGamePhysics(config: GameConfig) {
                   state.ball.holder = stealer
                   state.ball.isInFlight = false
                   state.ball.velocity = { x: 0, y: 0 }
+                  ballPossessionCooldown = BALL_POSSESSION_COOLDOWN // Reset cooldown
                 }
               }
             }

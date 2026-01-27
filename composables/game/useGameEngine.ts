@@ -99,14 +99,16 @@ export function useGameEngine(canvasRef: Ref<HTMLCanvasElement | null>) {
   const createPlayers = (): Player[] => {
     const positions = getPlayerStartPositions()
     return [
-      // White team
+      // White team (4 players)
       createPlayer('white-gk', 'white', 'goalkeeper', positions.white.goalkeeper),
       createPlayer('white-att', 'white', 'attacker', positions.white.attacker, true), // Player controlled
       createPlayer('white-def', 'white', 'defender', positions.white.defender),
-      // Blue team
+      createPlayer('white-cen', 'white', 'center', positions.white.center),
+      // Blue team (4 players)
       createPlayer('blue-gk', 'blue', 'goalkeeper', positions.blue.goalkeeper),
       createPlayer('blue-att', 'blue', 'attacker', positions.blue.attacker),
       createPlayer('blue-def', 'blue', 'defender', positions.blue.defender),
+      createPlayer('blue-cen', 'blue', 'center', positions.blue.center),
     ]
   }
 
@@ -359,7 +361,7 @@ export function useGameEngine(canvasRef: Ref<HTMLCanvasElement | null>) {
         physics.applyWaterPhysics(gameState, deltaTime)
 
         // Check collisions
-        const { goalScored, scoringTeam } = physics.checkCollisions(gameState)
+        const { goalScored, scoringTeam } = physics.checkCollisions(gameState, deltaTime)
         if (goalScored && scoringTeam) {
           handleGoalScored(scoringTeam)
         }

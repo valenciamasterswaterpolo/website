@@ -24,12 +24,14 @@ const TEAM_SKILLS = {
 const ATTACK_FORMATION = {
   attacker: { xOffset: 0.3, yOffset: -0.25 }, // Forward and up
   defender: { xOffset: 0.1, yOffset: 0.25 },  // Behind and down
+  center: { xOffset: 0.25, yOffset: 0 },      // Central attacking position
   goalkeeper: { xOffset: -0.35, yOffset: 0 }, // Near own goal
 }
 
 const DEFENSE_FORMATION = {
   attacker: { xOffset: -0.1, yOffset: -0.2 }, // Fall back slightly
   defender: { xOffset: -0.25, yOffset: 0.2 }, // Deep defense
+  center: { xOffset: -0.15, yOffset: 0 },     // Central defensive position
   goalkeeper: { xOffset: -0.4, yOffset: 0 },  // Very close to goal
 }
 
@@ -645,7 +647,7 @@ export function useGameAI(config: GameConfig) {
           })
 
           // Perpendicular offset based on role
-          const perpOffset = player.role === 'attacker' ? 60 : -60
+          const perpOffset = player.role === 'attacker' ? 60 : player.role === 'center' ? 0 : -60
           const supportPosition = {
             x: ballHolder.position.x + toGoal.x * 100 + (-toGoal.y) * perpOffset,
             y: ballHolder.position.y + toGoal.y * 100 + toGoal.x * perpOffset,

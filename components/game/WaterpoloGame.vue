@@ -8,6 +8,8 @@ const {
   gameState,
   config,
   startGame,
+  resumeGame,
+  resetGame,
   initGame,
   cleanupGame,
   touchState,
@@ -128,7 +130,7 @@ onUnmounted(() => {
               <span class="action">Switch Player</span>
             </div>
             <div class="control-row">
-              <span class="key">ESC</span>
+              <span class="key">SPACE</span>
               <span class="action">Pause</span>
             </div>
           </div>
@@ -139,6 +141,33 @@ onUnmounted(() => {
             <p class="touch-hint">Drag left side to move</p>
             <p class="touch-hint">Tap buttons to pass/shoot</p>
           </div>
+        </div>
+      </div>
+
+      <!-- Pause Overlay -->
+      <div
+        v-if="gameState.phase === 'paused'"
+        class="game-overlay pause-overlay"
+      >
+        <div class="pause-content">
+          <h2 class="pause-title">PAUSED</h2>
+
+          <div class="pause-buttons">
+            <button
+              class="pause-btn continue-btn"
+              @click="resumeGame"
+            >
+              CONTINUE
+            </button>
+            <button
+              class="pause-btn restart-btn"
+              @click="resetGame(); startGame()"
+            >
+              RESTART
+            </button>
+          </div>
+
+          <p class="pause-hint">Press SPACE to continue</p>
         </div>
       </div>
     </div>
@@ -358,6 +387,70 @@ onUnmounted(() => {
   margin: 0.25rem 0;
 }
 
+/* Pause Overlay */
+.pause-overlay {
+  z-index: 50;
+}
+
+.pause-content {
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+  padding: 2rem;
+}
+
+.pause-title {
+  font-size: 2rem;
+  color: #FE6E81;
+  margin-bottom: 2rem;
+  text-shadow: 4px 4px 0 #C04050;
+}
+
+.pause-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.pause-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.75rem;
+  border: 4px solid #FCFBD9;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  min-width: 180px;
+}
+
+.pause-btn:hover {
+  transform: translateY(-2px);
+}
+
+.pause-btn:active {
+  transform: translateY(2px);
+}
+
+.continue-btn {
+  color: #0E2433;
+  background: linear-gradient(180deg, #70BECF 0%, #196CA0 100%);
+  box-shadow: 0 4px 0 #104060;
+}
+
+.restart-btn {
+  color: #FCFBD9;
+  background: linear-gradient(180deg, #73326D 0%, #4A2048 100%);
+  box-shadow: 0 4px 0 #2A1030;
+}
+
+.pause-hint {
+  font-size: 0.5rem;
+  color: #9ED2D5;
+  margin-top: 1rem;
+}
+
 /* Touch Controls */
 .touch-controls {
   position: fixed;
@@ -484,6 +577,16 @@ onUnmounted(() => {
   .key {
     min-width: 40px;
     font-size: 0.4rem;
+  }
+
+  .pause-title {
+    font-size: 1.25rem;
+  }
+
+  .pause-btn {
+    font-size: 0.625rem;
+    padding: 0.5rem 1rem;
+    min-width: 140px;
   }
 }
 

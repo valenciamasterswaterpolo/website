@@ -83,6 +83,10 @@ export function useGameConfig() {
           x: poolCenter.x - quarterWidth / 2,
           y: poolCenter.y + 80,
         },
+        center: {
+          x: poolCenter.x - quarterWidth,
+          y: poolCenter.y,
+        },
       },
       blue: {
         goalkeeper: {
@@ -96,6 +100,10 @@ export function useGameConfig() {
         defender: {
           x: poolCenter.x + quarterWidth / 2,
           y: poolCenter.y + 80,
+        },
+        center: {
+          x: poolCenter.x + quarterWidth,
+          y: poolCenter.y,
         },
       },
     }

@@ -69,9 +69,6 @@ function handleKeyDown(e: KeyboardEvent) {
       sharedPressedThisFrame.switchPlayer = true
       break
     case 'Space':
-      sharedInputState.shoot = true
-      sharedPressedThisFrame.shoot = true
-      break
     case 'Escape':
     case 'KeyP':
       sharedInputState.pause = true
@@ -98,12 +95,12 @@ function handleKeyUp(e: KeyboardEvent) {
       sharedInputState.pass = false
       break
     case 'KeyW':
-    case 'Space':
       sharedInputState.shoot = false
       break
     case 'KeyE':
       sharedInputState.switchPlayer = false
       break
+    case 'Space':
     case 'Escape':
     case 'KeyP':
       sharedInputState.pause = false

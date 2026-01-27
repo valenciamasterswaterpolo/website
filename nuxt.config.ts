@@ -31,6 +31,7 @@ export default defineNuxtConfig({
         { name: 'author', content: 'Valencia Masters Water Polo Cup' },
         { name: 'robots', content: 'index, follow' },
         { name: 'theme-color', content: '#73326D' },
+        { name: 'apple-mobile-web-app-title', content: 'Valencia Masters Water Polo Cup' },
 
         // Open Graph
         { property: 'og:type', content: 'website' },
@@ -58,7 +59,13 @@ export default defineNuxtConfig({
         { name: 'ICBM', content: '39.4817, -0.3419' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        // Favicons
+        { rel: 'icon', type: 'image/png', href: '/favicon-96x96.png', sizes: '96x96' },
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'shortcut icon', href: '/favicon.ico' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/site.webmanifest' },
+        // SEO & Fonts
         { rel: 'canonical', href: 'https://valenciamasterswaterpolo.com' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },

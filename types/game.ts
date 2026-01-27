@@ -36,7 +36,7 @@ export interface Sprite {
 
 // ============ PLAYER ENTITIES ============
 export type TeamType = 'white' | 'blue'
-export type PlayerRole = 'attacker' | 'defender' | 'goalkeeper'
+export type PlayerRole = 'attacker' | 'defender' | 'goalkeeper' | 'center'
 export type PlayerDirection = 'up' | 'down' | 'left' | 'right'
 export type AIState =
   | 'idle'
