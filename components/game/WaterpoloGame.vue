@@ -118,16 +118,8 @@ onUnmounted(() => {
               <span class="action">Move</span>
             </div>
             <div class="control-row">
-              <span class="key">Q</span>
-              <span class="action">Pass Ball</span>
-            </div>
-            <div class="control-row">
-              <span class="key">W</span>
-              <span class="action">Shoot</span>
-            </div>
-            <div class="control-row">
               <span class="key">E</span>
-              <span class="action">Switch Player</span>
+              <span class="action">Switch players, pass and shoot</span>
             </div>
             <div class="control-row">
               <span class="key">SPACE</span>
