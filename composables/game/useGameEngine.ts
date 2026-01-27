@@ -300,36 +300,36 @@ export function useGameEngine(canvasRef: Ref<HTMLCanvasElement | null>) {
 
   const handleGoalScored = (scoringTeam: TeamType) => {
     try {
-      gameState.score[scoringTeam]++
-      gameState.lastGoalTeam = scoringTeam
-      gameState.phase = 'goal_scored'
-      audio.playGoal()
+    gameState.score[scoringTeam]++
+    gameState.lastGoalTeam = scoringTeam
+    gameState.phase = 'goal_scored'
+    audio.playGoal()
 
-      setTimeout(() => {
+    setTimeout(() => {
         try {
-          resetPositions()
-          gameState.phase = 'countdown'
-          gameState.countdownValue = 3
+      resetPositions()
+      gameState.phase = 'countdown'
+      gameState.countdownValue = 3
 
-          const countdownInterval = setInterval(() => {
+      const countdownInterval = setInterval(() => {
             try {
-              gameState.countdownValue--
-              if (gameState.countdownValue <= 0) {
-                clearInterval(countdownInterval)
-                gameState.phase = 'playing'
-                audio.playWhistle()
-              }
+        gameState.countdownValue--
+        if (gameState.countdownValue <= 0) {
+          clearInterval(countdownInterval)
+          gameState.phase = 'playing'
+          audio.playWhistle()
+        }
             } catch (error) {
               console.error('[GAME] Countdown interval error:', error)
               clearInterval(countdownInterval)
               gameState.phase = 'playing'
             }
-          }, 1000)
+      }, 1000)
         } catch (error) {
           console.error('[GAME] Goal reset timeout error:', error)
           gameState.phase = 'playing'
         }
-      }, 2000)
+    }, 2000)
     } catch (error) {
       console.error('[GAME] Goal scored handler error:', error)
     }
@@ -409,7 +409,7 @@ export function useGameEngine(canvasRef: Ref<HTMLCanvasElement | null>) {
 
       // Render (with error protection)
       try {
-        renderer.render(gameState)
+      renderer.render(gameState)
       } catch (renderError) {
         console.error('[GAME RENDER ERROR]', renderError)
       }
@@ -424,34 +424,34 @@ export function useGameEngine(canvasRef: Ref<HTMLCanvasElement | null>) {
 
   const startGame = () => {
     try {
-      if (gameState.phase !== 'menu' && gameState.phase !== 'game_over') return
+    if (gameState.phase !== 'menu' && gameState.phase !== 'game_over') return
 
-      audio.loadAudio()
-      resetPositions()
-      gameState.score = { white: 0, blue: 0 }
-      gameState.time = config.gameDuration
-      gameState.phase = 'countdown'
-      gameState.countdownValue = 3
+    audio.loadAudio()
+    resetPositions()
+    gameState.score = { white: 0, blue: 0 }
+    gameState.time = config.gameDuration
+    gameState.phase = 'countdown'
+    gameState.countdownValue = 3
 
-      const countdownInterval = setInterval(() => {
+    const countdownInterval = setInterval(() => {
         try {
-          gameState.countdownValue--
-          if (gameState.countdownValue <= 0) {
-            clearInterval(countdownInterval)
-            gameState.phase = 'playing'
-            audio.playWhistle()
-          }
+      gameState.countdownValue--
+      if (gameState.countdownValue <= 0) {
+        clearInterval(countdownInterval)
+        gameState.phase = 'playing'
+        audio.playWhistle()
+      }
         } catch (error) {
           console.error('[GAME] Start countdown error:', error)
           clearInterval(countdownInterval)
           gameState.phase = 'playing'
         }
-      }, 1000)
+    }, 1000)
 
-      if (!animationFrameId) {
-        lastTime = performance.now()
-        animationFrameId = requestAnimationFrame(gameLoop)
-      }
+    if (!animationFrameId) {
+      lastTime = performance.now()
+      animationFrameId = requestAnimationFrame(gameLoop)
+    }
     } catch (error) {
       console.error('[GAME] Start game error:', error)
     }
@@ -478,14 +478,12 @@ export function useGameEngine(canvasRef: Ref<HTMLCanvasElement | null>) {
   }
 
   const initGame = () => {
-    console.log('[GAME] Initializing game engine...')
     setupInputListeners()
     lastTime = performance.now()
     animationFrameId = requestAnimationFrame(gameLoop)
   }
 
   const cleanupGame = () => {
-    console.log('[GAME] Cleaning up game engine...')
     cleanupInputListeners()
     audio.cleanup()
     if (animationFrameId) {
