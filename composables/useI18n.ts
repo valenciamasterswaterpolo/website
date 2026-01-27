@@ -115,6 +115,18 @@ const translations = {
       ]
     },
 
+    // Game section
+    game: {
+      badge: 'ARCADE',
+      title: 'Juega al Waterpolo',
+      description: 'Vive la emoción del waterpolo con nuestro juego arcade retro. Controla a tu jugador, pasa a tus compañeros y marca goles.',
+      mobileNote: 'Para la mejor experiencia, juega en un dispositivo con teclado.',
+      move: 'Mover',
+      pass: 'Pasar',
+      shoot: 'Tirar',
+      switchPlayer: 'Cambiar'
+    },
+
     // Registration section
     registration: {
       title: 'Inscripción de equipos',
@@ -313,6 +325,18 @@ const translations = {
         { number: '200+', label: 'Players' },
         { number: '+60%', label: 'International' }
       ]
+    },
+
+    // Game section
+    game: {
+      badge: 'ARCADE',
+      title: 'Play Waterpolo',
+      description: 'Experience the excitement of waterpolo with our retro-style arcade game. Control your player, pass to teammates, and score goals!',
+      mobileNote: 'For the best experience, play on a device with a keyboard.',
+      move: 'Move',
+      pass: 'Pass',
+      shoot: 'Shoot',
+      switchPlayer: 'Switch'
     },
 
     // Registration section

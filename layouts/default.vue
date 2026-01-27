@@ -16,8 +16,9 @@ provide('modalControls', { openModal, closeModal, showModal })
 
 <template>
   <div class="min-h-screen">
+    <ScrollProgressBar />
     <NavBar @open-modal="openModal" />
-    <main>
+    <main id="main-content" role="main">
       <slot />
     </main>
     <FooterSection />

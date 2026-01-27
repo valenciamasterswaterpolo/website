@@ -13,6 +13,7 @@
     <SectionTeams />
     <SectionValencia />
     <SectionStats />
+    <SectionGame />
     <SectionRegistration />
     <SectionFAQ />
   </div>

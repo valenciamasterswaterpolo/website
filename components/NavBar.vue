@@ -70,9 +70,32 @@ const openModal = () => {
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
+
+// Close menu on escape key
+const handleKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape' && isMenuOpen.value) {
+    isMenuOpen.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeydown)
+})
 </script>
 
 <template>
+  <!-- Skip to main content link for accessibility -->
+  <a
+    href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-valencia-purple focus:text-white focus:rounded-lg"
+  >
+    Skip to main content
+  </a>
+
   <header
     class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
     :class="[
@@ -81,27 +104,32 @@ const scrollToTop = () => {
         : '-translate-y-full'
     ]"
   >
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
       <div class="flex items-center justify-between h-20">
         <!-- Logo -->
         <a
-          href="#"
+          href="/"
           class="flex items-center gap-3 transition-transform hover:scale-105"
+          aria-label="Valencia Masters Water Polo Cup - Home"
           @click.prevent="scrollToTop"
         >
           <img
             src="/images/logo.png"
-            alt="Valencia Masters"
+            alt="Valencia Masters Water Polo Cup"
             class="h-[130px] translate-y-2 w-auto"
+            width="130"
+            height="130"
+            loading="eager"
           />
         </a>
 
         <!-- Desktop Navigation -->
-        <div class="hidden lg:flex items-center gap-6">
+        <div class="hidden lg:flex items-center gap-6" role="list">
           <a
             v-for="link in navLinks"
             :key="link.href"
             :href="link.href"
+            role="listitem"
             class="text-sm font-medium text-deep-navy/80 dark:text-cream/80 hover:text-ocean-blue dark:hover:text-electric-cyan transition-colors tracking-wide"
             @click.prevent="scrollToSection(link.href)"
           >
@@ -117,10 +145,11 @@ const scrollToTop = () => {
           <!-- Language Switcher -->
           <button
             class="flex items-center gap-2 px-3 py-1.5 border border-soft-slate/30 rounded-full text-sm text-deep-navy/80 dark:text-cream/80 hover:border-ocean-blue dark:hover:border-electric-cyan hover:text-ocean-blue dark:hover:text-electric-cyan transition-all"
+            :aria-label="`Switch language to ${currentLanguage === 'es' ? 'English' : 'Español'}`"
             @click="toggleLanguage"
           >
             <span class="font-medium uppercase">{{ currentLanguage }}</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
             </svg>
           </button>
@@ -128,6 +157,7 @@ const scrollToTop = () => {
           <!-- Pre-registration CTA -->
           <button
             class="px-5 py-2 font-display text-sm tracking-widest uppercase bg-valencia-purple text-white rounded-full hover:bg-valencia-purple-hover hover:shadow-btn-primary transition-all hover:scale-105"
+            aria-label="Open pre-registration form"
             @click="openModal"
           >
             {{ t.nav.preRegister }}
@@ -137,6 +167,9 @@ const scrollToTop = () => {
         <!-- Mobile Menu Button -->
         <button
           class="lg:hidden p-2 text-deep-navy dark:text-cream"
+          :aria-expanded="isMenuOpen"
+          aria-controls="mobile-menu"
+          :aria-label="isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'"
           @click="isMenuOpen = !isMenuOpen"
         >
           <svg
@@ -145,6 +178,7 @@ const scrollToTop = () => {
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -154,6 +188,7 @@ const scrollToTop = () => {
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -171,13 +206,16 @@ const scrollToTop = () => {
       >
         <div
           v-if="isMenuOpen"
+          id="mobile-menu"
           class="lg:hidden py-4 border-t border-soft-slate/20 dark:border-soft-slate/10"
+          role="menu"
         >
           <div class="flex flex-col gap-2">
             <a
               v-for="link in navLinks"
               :key="link.href"
               :href="link.href"
+              role="menuitem"
               class="px-4 py-2 text-deep-navy/80 dark:text-cream/80 hover:text-ocean-blue dark:hover:text-electric-cyan hover:bg-deep-navy/5 dark:hover:bg-cream/5 rounded-lg transition-all"
               @click.prevent="scrollToSection(link.href)"
             >
@@ -192,9 +230,10 @@ const scrollToTop = () => {
                 <!-- Language Switcher (Mobile) -->
                 <button
                   class="flex items-center gap-2 text-deep-navy/80 dark:text-cream/80"
+                  :aria-label="`Switch language to ${currentLanguage === 'es' ? 'English' : 'Español'}`"
                   @click="toggleLanguage"
                 >
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                   </svg>
                   <span class="uppercase font-medium">{{ currentLanguage === 'es' ? 'EN' : 'ES' }}</span>
@@ -203,6 +242,8 @@ const scrollToTop = () => {
 
               <button
                 class="px-4 py-2 font-display text-sm tracking-widest uppercase bg-valencia-purple text-white rounded-full hover:bg-valencia-purple-hover"
+                role="menuitem"
+                aria-label="Open pre-registration form"
                 @click="openModal"
               >
                 {{ t.nav.preRegister }}

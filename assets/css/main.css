@@ -207,6 +207,130 @@
   .perspective-1000 {
     perspective: 1000px;
   }
+
+  /* ========================================
+     PREMIUM ANIMATION UTILITIES
+     ======================================== */
+
+  /* Scroll reveal base state */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Scroll reveal variants */
+  .scroll-reveal-left {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .scroll-reveal-left.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .scroll-reveal-right {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .scroll-reveal-right.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .scroll-reveal-scale {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .scroll-reveal-scale.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Stagger delay utilities */
+  .stagger-1 { transition-delay: 100ms; }
+  .stagger-2 { transition-delay: 200ms; }
+  .stagger-3 { transition-delay: 300ms; }
+  .stagger-4 { transition-delay: 400ms; }
+  .stagger-5 { transition-delay: 500ms; }
+  .stagger-6 { transition-delay: 600ms; }
+  .stagger-7 { transition-delay: 700ms; }
+  .stagger-8 { transition-delay: 800ms; }
+
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-transform duration-300;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Hover scale effect */
+  .hover-scale {
+    @apply transition-transform duration-300;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.02);
+  }
+
+  /* Perspective container for 3D effects */
+  .perspective-container {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+
+  /* Gradient text shimmer animation */
+  .text-gradient-animated {
+    background-size: 200% 200%;
+    animation: gradientShimmer 6s ease infinite;
+  }
+
+  /* Reduced motion overrides */
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-reveal,
+    .scroll-reveal-left,
+    .scroll-reveal-right,
+    .scroll-reveal-scale {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .hover-lift:hover,
+    .hover-scale:hover {
+      transform: none;
+    }
+
+    .text-gradient-animated {
+      animation: none;
+    }
+  }
+}
+
+/* Additional keyframes */
+@keyframes gradientShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Custom animations */

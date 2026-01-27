@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from '~/composables/useI18n'
 
 const props = defineProps<{
@@ -23,6 +23,9 @@ const formData = ref({
 
 const isSubmitting = ref(false)
 const submitStatus = ref<'idle' | 'success' | 'error'>('idle')
+
+// Reference to first input for focus management
+const firstInputRef = ref<HTMLInputElement | null>(null)
 
 // European countries list
 const countries = [
@@ -64,6 +67,17 @@ const countries = [
   'Other'
 ]
 
+// Generate unique IDs for form fields
+const fieldIds = {
+  teamName: 'modal-team-name',
+  contactName: 'modal-contact-name',
+  email: 'modal-email',
+  phonePrefix: 'modal-phone-prefix',
+  phone: 'modal-phone',
+  country: 'modal-country',
+  players: 'modal-players'
+}
+
 // Reset form when modal closes
 watch(() => props.show, (newVal) => {
   if (!newVal) {
@@ -79,7 +93,27 @@ watch(() => props.show, (newVal) => {
       }
       submitStatus.value = 'idle'
     }, 300)
+  } else {
+    // Focus first input when modal opens
+    setTimeout(() => {
+      firstInputRef.value?.focus()
+    }, 100)
   }
+})
+
+// Handle escape key to close modal
+const handleKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape' && props.show) {
+    closeModal()
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeydown)
 })
 
 // n8n Webhook URL
@@ -136,10 +170,15 @@ const closeModal = () => {
       <div
         v-if="show"
         class="fixed inset-0 z-50 flex items-center justify-center p-4"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
       >
         <!-- Backdrop -->
         <div
           class="absolute inset-0 bg-deep-navy/80 backdrop-blur-sm"
+          aria-hidden="true"
           @click="closeModal"
         />
 
@@ -158,36 +197,39 @@ const closeModal = () => {
           >
             <!-- Close button -->
             <button
-              class="absolute top-4 right-4 text-deep-navy/60 hover:text-deep-navy transition-colors"
+              type="button"
+              class="absolute top-4 right-4 text-deep-navy/60 dark:text-cream/60 hover:text-deep-navy dark:hover:text-cream transition-colors"
+              aria-label="Close modal"
               @click="closeModal"
             >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
             <!-- Success State -->
-            <div v-if="submitStatus === 'success'" class="text-center py-8">
-              <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-ocean-blue/15 text-ocean-blue">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div v-if="submitStatus === 'success'" class="text-center py-8" role="status" aria-live="polite">
+              <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-ocean-blue/15 text-ocean-blue" aria-hidden="true">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <p class="text-xl font-display tracking-wide text-deep-navy mb-2">
+              <p class="text-xl font-display tracking-wide text-deep-navy dark:text-cream mb-2">
                 {{ t.modal.success }}
               </p>
 
               <!-- WhatsApp Community -->
               <div class="mt-6 p-4 bg-[#25D366]/10 rounded-lg">
-                <p class="font-semibold text-deep-navy mb-1">{{ t.modal.whatsappTitle }}</p>
-                <p class="text-sm text-deep-navy/60 mb-3">{{ t.modal.whatsappText }}</p>
+                <p class="font-semibold text-deep-navy dark:text-cream mb-1">{{ t.modal.whatsappTitle }}</p>
+                <p class="text-sm text-deep-navy/60 dark:text-cream/60 mb-3">{{ t.modal.whatsappText }}</p>
                 <a
                   href="https://chat.whatsapp.com/Kqun0y0zVaUEbvPNtb3pMr"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white rounded-full text-sm font-medium hover:bg-[#20bd5a] transition-colors"
+                  aria-label="Join WhatsApp group (opens in new tab)"
                 >
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                   </svg>
                   {{ t.modal.whatsappButton }}
@@ -195,6 +237,7 @@ const closeModal = () => {
               </div>
 
               <button
+                type="button"
                 class="mt-6 btn-outline"
                 @click="closeModal"
               >
@@ -203,16 +246,17 @@ const closeModal = () => {
             </div>
 
             <!-- Error State -->
-            <div v-else-if="submitStatus === 'error'" class="text-center py-8">
-              <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-neon-coral/15 text-neon-coral">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div v-else-if="submitStatus === 'error'" class="text-center py-8" role="alert" aria-live="assertive">
+              <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-neon-coral/15 text-neon-coral" aria-hidden="true">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </div>
-              <p class="text-xl font-display tracking-wide text-deep-navy mb-2">
+              <p class="text-xl font-display tracking-wide text-deep-navy dark:text-cream mb-2">
                 {{ t.modal.error }}
               </p>
               <button
+                type="button"
                 class="mt-6 btn-primary"
                 @click="submitStatus = 'idle'"
               >
@@ -224,25 +268,30 @@ const closeModal = () => {
             <template v-else>
               <!-- Header -->
               <div class="text-center mb-6">
-                <h3 class="font-display text-2xl md:text-3xl tracking-wide text-gradient">
+                <h2 id="modal-title" class="font-display text-2xl md:text-3xl tracking-wide text-gradient">
                   {{ t.modal.title }}
-                </h3>
-                <p class="text-deep-navy/60 mt-2">
+                </h2>
+                <p id="modal-description" class="text-deep-navy/60 dark:text-cream/60 mt-2">
                   {{ t.modal.subtitle }}
                 </p>
               </div>
 
               <!-- Form -->
-              <form @submit.prevent="submitForm" class="space-y-4">
+              <form @submit.prevent="submitForm" class="space-y-4" novalidate>
                 <!-- Team Name -->
                 <div>
-                  <label class="block text-sm font-medium text-deep-navy/80 mb-1">
-                    {{ t.modal.fields.teamName }} *
+                  <label :for="fieldIds.teamName" class="block text-sm font-medium text-deep-navy/80 dark:text-cream/80 mb-1">
+                    {{ t.modal.fields.teamName }} <span aria-hidden="true">*</span>
+                    <span class="sr-only">(required)</span>
                   </label>
                   <input
+                    :id="fieldIds.teamName"
+                    ref="firstInputRef"
                     v-model="formData.teamName"
                     type="text"
                     required
+                    aria-required="true"
+                    autocomplete="organization"
                     class="form-input"
                     :placeholder="t.modal.fields.teamName"
                   />
@@ -250,13 +299,17 @@ const closeModal = () => {
 
                 <!-- Contact Name -->
                 <div>
-                  <label class="block text-sm font-medium text-deep-navy/80 mb-1">
-                    {{ t.modal.fields.contactName }} *
+                  <label :for="fieldIds.contactName" class="block text-sm font-medium text-deep-navy/80 dark:text-cream/80 mb-1">
+                    {{ t.modal.fields.contactName }} <span aria-hidden="true">*</span>
+                    <span class="sr-only">(required)</span>
                   </label>
                   <input
+                    :id="fieldIds.contactName"
                     v-model="formData.contactName"
                     type="text"
                     required
+                    aria-required="true"
+                    autocomplete="name"
                     class="form-input"
                     :placeholder="t.modal.fields.contactName"
                   />
@@ -264,13 +317,17 @@ const closeModal = () => {
 
                 <!-- Email -->
                 <div>
-                  <label class="block text-sm font-medium text-deep-navy/80 mb-1">
-                    {{ t.modal.fields.email }} *
+                  <label :for="fieldIds.email" class="block text-sm font-medium text-deep-navy/80 dark:text-cream/80 mb-1">
+                    {{ t.modal.fields.email }} <span aria-hidden="true">*</span>
+                    <span class="sr-only">(required)</span>
                   </label>
                   <input
+                    :id="fieldIds.email"
                     v-model="formData.email"
                     type="email"
                     required
+                    aria-required="true"
+                    autocomplete="email"
                     class="form-input"
                     :placeholder="t.modal.fields.email"
                   />
@@ -278,38 +335,51 @@ const closeModal = () => {
 
                 <!-- Phone -->
                 <div>
-                  <label class="block text-sm font-medium text-deep-navy/80 mb-1">
-                    {{ t.modal.fields.phone }} *
+                  <label :for="fieldIds.phone" class="block text-sm font-medium text-deep-navy/80 dark:text-cream/80 mb-1">
+                    {{ t.modal.fields.phone }} <span aria-hidden="true">*</span>
+                    <span class="sr-only">(required)</span>
                   </label>
                   <div class="flex gap-2">
+                    <label :for="fieldIds.phonePrefix" class="sr-only">Phone country code</label>
                     <input
+                      :id="fieldIds.phonePrefix"
                       v-model="formData.phonePrefix"
                       type="text"
                       required
+                      aria-required="true"
+                      autocomplete="tel-country-code"
                       class="form-input w-20 text-center"
                       placeholder="+34"
                     />
                     <input
+                      :id="fieldIds.phone"
                       v-model="formData.phone"
                       type="tel"
                       required
+                      aria-required="true"
+                      autocomplete="tel-national"
                       class="form-input flex-1"
                       :placeholder="t.modal.fields.phone"
+                      aria-describedby="phone-helper"
                     />
                   </div>
-                  <p class="text-xs text-deep-navy/50 mt-1">
+                  <p id="phone-helper" class="text-xs text-deep-navy/50 dark:text-cream/50 mt-1">
                     {{ t.modal.fields.phoneHelper }}
                   </p>
                 </div>
 
                 <!-- Country -->
                 <div>
-                  <label class="block text-sm font-medium text-deep-navy/80 mb-1">
-                    {{ t.modal.fields.country }} *
+                  <label :for="fieldIds.country" class="block text-sm font-medium text-deep-navy/80 dark:text-cream/80 mb-1">
+                    {{ t.modal.fields.country }} <span aria-hidden="true">*</span>
+                    <span class="sr-only">(required)</span>
                   </label>
                   <select
+                    :id="fieldIds.country"
                     v-model="formData.country"
                     required
+                    aria-required="true"
+                    autocomplete="country-name"
                     class="form-input"
                   >
                     <option value="" disabled>{{ t.modal.fields.country }}</option>
@@ -321,15 +391,18 @@ const closeModal = () => {
 
                 <!-- Number of Players -->
                 <div>
-                  <label class="block text-sm font-medium text-deep-navy/80 mb-1">
-                    {{ t.modal.fields.players }} *
+                  <label :for="fieldIds.players" class="block text-sm font-medium text-deep-navy/80 dark:text-cream/80 mb-1">
+                    {{ t.modal.fields.players }} <span aria-hidden="true">*</span>
+                    <span class="sr-only">(required)</span>
                   </label>
                   <input
+                    :id="fieldIds.players"
                     v-model="formData.players"
                     type="number"
                     min="1"
                     max="30"
                     required
+                    aria-required="true"
                     class="form-input"
                     placeholder="10-16"
                   />
@@ -339,14 +412,15 @@ const closeModal = () => {
                 <button
                   type="submit"
                   :disabled="isSubmitting"
+                  :aria-busy="isSubmitting"
                   class="w-full btn-primary mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span v-if="isSubmitting" class="flex items-center justify-center gap-2">
-                    <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                    <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
                       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
                       <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                     </svg>
-                    Sending...
+                    <span>Sending...</span>
                   </span>
                   <span v-else>{{ t.modal.submit }}</span>
                 </button>
