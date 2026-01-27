@@ -90,7 +90,7 @@ const { openModal } = inject('modalControls') as { openModal: () => void }
       :style="bgTransform"
     >
       <img
-        src="/images/hero-background.png"
+        src="/images/hero-background.jpg"
         alt=""
         role="presentation"
         class="w-full h-full object-cover"
