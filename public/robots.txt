@@ -1,0 +1,11 @@
+# Robots.txt for Valencia Masters Water Polo Cup
+# https://valenciamasterswaterpolo.com
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://valenciamasterswaterpolo.com/sitemap.xml
+
+# Crawl delay (optional, be friendly to crawlers)
+Crawl-delay: 1
