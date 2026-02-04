@@ -38,6 +38,17 @@ let listenersSetup = false
 
 // Module-level handler functions (defined once)
 function handleKeyDown(e: KeyboardEvent) {
+  // Don't intercept keys when user is typing in form inputs
+  const target = e.target as HTMLElement
+  if (
+    target.tagName === 'INPUT' ||
+    target.tagName === 'TEXTAREA' ||
+    target.tagName === 'SELECT' ||
+    target.isContentEditable
+  ) {
+    return
+  }
+
   const gameKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'KeyQ', 'KeyW', 'KeyE', 'KeyP', 'Escape']
   if (gameKeys.includes(e.code)) {
     e.preventDefault()
@@ -78,6 +89,17 @@ function handleKeyDown(e: KeyboardEvent) {
 }
 
 function handleKeyUp(e: KeyboardEvent) {
+  // Don't intercept keys when user is typing in form inputs
+  const target = e.target as HTMLElement
+  if (
+    target.tagName === 'INPUT' ||
+    target.tagName === 'TEXTAREA' ||
+    target.tagName === 'SELECT' ||
+    target.isContentEditable
+  ) {
+    return
+  }
+
   switch (e.code) {
     case 'ArrowUp':
       sharedInputState.up = false

@@ -221,7 +221,93 @@ const translations = {
 
     // Footer
     footer: {
-      rights: 'Todos los derechos reservados'
+      rights: 'Todos los derechos reservados',
+      privacy: 'Política de Privacidad',
+      terms: 'Términos de Servicio'
+    },
+
+    // Privacy Policy
+    privacy: {
+      title: 'Política de Privacidad',
+      lastUpdated: 'Última actualización: Febrero 2026',
+      intro: 'En Valencia Masters Water Polo Cup respetamos tu privacidad. Esta política explica cómo tratamos la información que nos proporcionas.',
+      sections: [
+        {
+          title: '¿Qué información recopilamos?',
+          content: 'Solo recopilamos la información que nos proporcionas voluntariamente a través del formulario de pre-inscripción: nombre del equipo, nombre de contacto, email, teléfono, país y número estimado de jugadores.'
+        },
+        {
+          title: '¿Para qué usamos esta información?',
+          content: 'Utilizamos esta información únicamente para gestionar tu pre-inscripción al torneo, contactarte con información relevante sobre el evento, y añadirte al grupo de WhatsApp del torneo si tu equipo es seleccionado.'
+        },
+        {
+          title: '¿Compartimos tu información?',
+          content: 'No vendemos, alquilamos ni compartimos tu información personal con terceros, excepto cuando sea necesario para la organización del torneo o cuando la ley lo requiera.'
+        },
+        {
+          title: '¿Cómo protegemos tu información?',
+          content: 'Tomamos medidas razonables para proteger la información que nos proporcionas contra acceso no autorizado o alteración.'
+        },
+        {
+          title: 'Cookies y seguimiento',
+          content: 'Este sitio web no utiliza cookies de seguimiento ni herramientas de análisis. Solo almacenamos tu preferencia de idioma en el navegador para mejorar tu experiencia.'
+        },
+        {
+          title: 'Tus derechos',
+          content: 'Puedes solicitar acceso, corrección o eliminación de tus datos personales en cualquier momento contactándonos por email.'
+        },
+        {
+          title: 'Contacto',
+          content: 'Si tienes preguntas sobre esta política de privacidad, puedes contactarnos en info@valenciamasterswaterpolo.com'
+        }
+      ],
+      backToHome: 'Volver al inicio'
+    },
+
+    // Terms of Service
+    terms: {
+      title: 'Términos de Servicio',
+      lastUpdated: 'Última actualización: Febrero 2026',
+      intro: 'Al utilizar este sitio web y participar en la Valencia Masters Water Polo Cup, aceptas los siguientes términos y condiciones.',
+      sections: [
+        {
+          title: 'Uso del sitio web',
+          content: 'Este sitio web es de carácter informativo sobre la Valencia Masters Water Polo Cup. Te comprometes a usar este sitio solo para fines legales y de acuerdo con estos términos.'
+        },
+        {
+          title: 'Pre-inscripción',
+          content: 'La pre-inscripción no garantiza la participación en el torneo. La organización se reserva el derecho de seleccionar los equipos participantes según disponibilidad y criterios organizativos.'
+        },
+        {
+          title: 'Pago e inscripción',
+          content: 'La inscripción solo se considerará confirmada una vez realizado el pago completo de la cuota de inscripción según las instrucciones proporcionadas por la organización.'
+        },
+        {
+          title: 'Cancelaciones',
+          content: 'Las políticas de cancelación y reembolso serán comunicadas a los equipos que confirmen su participación. La organización se reserva el derecho de cancelar o modificar el evento por circunstancias excepcionales.'
+        },
+        {
+          title: 'Responsabilidad',
+          content: 'Los participantes compiten bajo su propia responsabilidad. La organización no se hace responsable de lesiones, pérdidas o daños que puedan ocurrir durante el evento.'
+        },
+        {
+          title: 'Propiedad intelectual',
+          content: 'Todo el contenido de este sitio web, incluyendo imágenes, textos y logotipos, es propiedad de Valencia Masters Water Polo Cup o se usa con permiso.'
+        },
+        {
+          title: 'Imágenes y grabaciones',
+          content: 'Al participar en el torneo, autorizas a la organización a utilizar imágenes y grabaciones del evento con fines promocionales.'
+        },
+        {
+          title: 'Modificaciones',
+          content: 'Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios serán publicados en esta página.'
+        },
+        {
+          title: 'Contacto',
+          content: 'Para cualquier consulta sobre estos términos, contacta con nosotros en info@valenciamasterswaterpolo.com'
+        }
+      ],
+      backToHome: 'Volver al inicio'
     }
   },
 
@@ -433,7 +519,93 @@ const translations = {
 
     // Footer
     footer: {
-      rights: 'All rights reserved'
+      rights: 'All rights reserved',
+      privacy: 'Privacy Policy',
+      terms: 'Terms of Service'
+    },
+
+    // Privacy Policy
+    privacy: {
+      title: 'Privacy Policy',
+      lastUpdated: 'Last updated: February 2026',
+      intro: 'At Valencia Masters Water Polo Cup, we respect your privacy. This policy explains how we handle the information you provide us.',
+      sections: [
+        {
+          title: 'What information do we collect?',
+          content: 'We only collect information you voluntarily provide through the pre-registration form: team name, contact name, email, phone, country, and estimated number of players.'
+        },
+        {
+          title: 'How do we use this information?',
+          content: 'We use this information solely to manage your tournament pre-registration, contact you with relevant event information, and add you to the tournament WhatsApp group if your team is selected.'
+        },
+        {
+          title: 'Do we share your information?',
+          content: 'We do not sell, rent, or share your personal information with third parties, except when necessary for tournament organization or when required by law.'
+        },
+        {
+          title: 'How do we protect your information?',
+          content: 'We take reasonable measures to protect the information you provide against unauthorized access or alteration.'
+        },
+        {
+          title: 'Cookies and tracking',
+          content: 'This website does not use tracking cookies or analytics tools. We only store your language preference in the browser to improve your experience.'
+        },
+        {
+          title: 'Your rights',
+          content: 'You can request access, correction, or deletion of your personal data at any time by contacting us via email.'
+        },
+        {
+          title: 'Contact',
+          content: 'If you have questions about this privacy policy, you can contact us at info@valenciamasterswaterpolo.com'
+        }
+      ],
+      backToHome: 'Back to home'
+    },
+
+    // Terms of Service
+    terms: {
+      title: 'Terms of Service',
+      lastUpdated: 'Last updated: February 2026',
+      intro: 'By using this website and participating in the Valencia Masters Water Polo Cup, you agree to the following terms and conditions.',
+      sections: [
+        {
+          title: 'Website use',
+          content: 'This website is informational about the Valencia Masters Water Polo Cup. You agree to use this site only for lawful purposes and in accordance with these terms.'
+        },
+        {
+          title: 'Pre-registration',
+          content: 'Pre-registration does not guarantee participation in the tournament. The organization reserves the right to select participating teams based on availability and organizational criteria.'
+        },
+        {
+          title: 'Payment and registration',
+          content: 'Registration will only be considered confirmed once full payment of the registration fee has been made according to the instructions provided by the organization.'
+        },
+        {
+          title: 'Cancellations',
+          content: 'Cancellation and refund policies will be communicated to teams that confirm their participation. The organization reserves the right to cancel or modify the event due to exceptional circumstances.'
+        },
+        {
+          title: 'Liability',
+          content: 'Participants compete at their own risk. The organization is not responsible for injuries, losses, or damages that may occur during the event.'
+        },
+        {
+          title: 'Intellectual property',
+          content: 'All content on this website, including images, text, and logos, is owned by Valencia Masters Water Polo Cup or used with permission.'
+        },
+        {
+          title: 'Images and recordings',
+          content: 'By participating in the tournament, you authorize the organization to use images and recordings from the event for promotional purposes.'
+        },
+        {
+          title: 'Modifications',
+          content: 'We reserve the right to modify these terms at any time. Changes will be posted on this page.'
+        },
+        {
+          title: 'Contact',
+          content: 'For any questions about these terms, contact us at info@valenciamasterswaterpolo.com'
+        }
+      ],
+      backToHome: 'Back to home'
     }
   }
 }

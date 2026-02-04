@@ -107,6 +107,22 @@ useHead({
             <!-- Divider -->
             <div class="w-48 h-px bg-gradient-to-r from-transparent via-soft-slate/40 to-transparent" aria-hidden="true" />
 
+            <!-- Legal Links -->
+            <nav class="flex items-center gap-6 text-sm" aria-label="Legal links">
+              <NuxtLink
+                to="/privacy"
+                class="text-deep-navy/60 dark:text-cream/60 hover:text-valencia-purple dark:hover:text-electric-cyan transition-colors"
+              >
+                {{ t.footer.privacy }}
+              </NuxtLink>
+              <NuxtLink
+                to="/terms"
+                class="text-deep-navy/60 dark:text-cream/60 hover:text-valencia-purple dark:hover:text-electric-cyan transition-colors"
+              >
+                {{ t.footer.terms }}
+              </NuxtLink>
+            </nav>
+
             <!-- Bottom row -->
             <div class="flex flex-col md:flex-row items-center gap-4 text-sm text-deep-navy/50 dark:text-cream/50">
               <p>&copy; {{ currentYear }} Valencia Masters Water Polo Cup. {{ t.footer.rights }}.</p>
